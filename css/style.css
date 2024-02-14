@@ -15,7 +15,7 @@ body {
  /* NotoSans (=) Bon Gothic */
  font: normal 13px 'Bon Gothic'; letter-spacing: -1px; position: relative; color: #666; /* background-color: #ff6a00; */}
 
-.blind { position: absolute; top: -999px; left: -999px; text-indent: -999; font-size: 0; width: 0; height: 0; } 
+.blind { position: absolute; top: -999px; left: -999px; text-indent: -999px; font-size: 0; width: 0; height: 0; } 
 
 ul,
 li { margin: 0; padding: 0; list-style: none; } 
