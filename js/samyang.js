@@ -88,10 +88,84 @@ $(function () {
     });
 
     // 화살표 클릭시 최상단 
-    $("#quick .arrow").on("click",function(){
+    $("#quick .arrow").on("click", function () {
         $("html,body").stop().animate({
-            scrollTop:0 // 수직스크롤 위치
-        },400);
+            scrollTop: 0 // 수직스크롤 위치
+        }, 400);
+    });
+
+
+    
+
+    // 인디케이터 
+    var slides = $(".product-new  ul  li"); // 슬라이드 이미지
+    var indicators = $(".newPro3ea .inds .indicator");
+    // 자동슬라이드 간격 설정 
+    var autoSlideIntervalIdProduct;
+    var currentSlideIndexProduct = 0;
+
+    // 슬라이드 지정된 인덱스로 이동하는 함수
+    function moveToSlideProduct(index) {
+        // 슬라이드로 도달하면 아무것도 하지 않음
+        if (currentSlideIndexProduct === index) return;
+        // 슬라이드 너비 가져와 계산
+        var slideWidth = slides.width();
+        var offset = -index * slideWidth;
+
+        // 애니메이션 - 슬라이드전환효과
+        $(".newPro3ea > ul").animate({
+            left: offset + "px"
+        }, 500, function () {
+            // 현제슬라이드클래스 제거하고 새로운 슬라이드에 클래스 추가
+            slides.removeClass("on");
+            slides.eq(index).addClass("on");
+        });
+        // 함수 호출시마다 인디케이터 업데이트
+        currentSlideIndexProduct = index;
+        // 현재 보여지고있는 인덱스를 index값으로 업데이트
+        updateIndicatorsProduct(index);
+    }
+    // updateIndicatorsProduct 함수를 호출하여 인디케이터 업데이트
+    // index는 현재 보여지고있는 슬라이드임
+
+    // 슬라이드업데이트 함수
+    function updateIndicatorsProduct(index) {
+        indicators.removeClass("active");
+        indicators.eq(index).addClass("active");
+    }
+    // 자동슬라이드 시작 함수
+    function startAutoSlideProduct() {
+        // setInterval - 일정시간동안 반복하여 실행
+        autoSlideIntervalIdProduct = setInterval(function () {
+            // 다음 슬라이드 인덱스 계산
+            var nextSlideIndexProduct = currentSlideIndexProduct + 1;
+            // 마지막 슬라이드에 도달하면 처음 슬라이드로 다시 시작
+            if (nextSlideIndexProduct === slides.length) {
+                nextSlideIndexProduct = 0;
+                // 위의 조건이 맞으면,
+                // 처음 슬라이드 (0)으로 돌아가게 해주는 구조 
+            }
+            // nextSlideIndexProduct === slides.langth 
+            // 다음에 표시할 슬라이드 인덱스가 제품 자체의 길이와 같은지 확인
+            moveToSlideProduct(nextSlideIndexProduct);
+        }, 2000); // 2초 간격으로 슬라이드 변경됨
+        // 2초 간격으로 moveToSlideProduct 함수가 호출되어 자동전환
+    }
+    // 수동 슬라이드 변경
+    function changeSlideProduct(index) {
+        // 슬라이드 인터발 제거
+        clearInterval(autoSlideIntervalIdProduct);
+        // 원하는 슬라이드로 이동
+        moveToSlideProduct(index);
+        // 자동슬라이드 재시작
+        startAutoSlideProduct();
+    }
+
+    // 인디케이터 클릭 이벤트 
+    indicators.click(function () {
+        var index = $(this).index();
+        // 클릭한 인디케이터로 슬라이드 변경
+        changeSlideProduct(index);
     });
 
 });
